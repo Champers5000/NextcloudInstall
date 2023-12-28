@@ -218,7 +218,7 @@
 
 	Log into MariaDB database server
 
-		mysql -u root -p
+		sudo /usr/bin/mariadb -u root -p
 
 	Then create a database for Nextcloud.
 
