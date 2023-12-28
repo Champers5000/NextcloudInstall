@@ -409,8 +409,8 @@
 		/mnt/wddrive/nextcloud/data/
 
 		Configure the database
-		nextcloud
-		strong_password
+   		USER (from when you setup the database user)
+		PASSWD (from when you setup the database user)
 		nextcloud
 		localhost
 
