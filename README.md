@@ -240,7 +240,9 @@
 
 	Enable Binary Logging in MariaDB
 
-	In /etc/mysql/my.cnf in the [mysql] section, check if the following 2 lines are there
+   		vim /etc/my.cnf.d/mysql-clients.cnf
+
+	In the [mysql] section, add these two lines
 
 		log-bin        = mysql-bin
 		binlog_format  = mixed
@@ -382,7 +384,7 @@
 
 		systemctl reload nginx
 
-5. NC install PHP modules
+6. NC install PHP modules
 
 	Install
 
@@ -414,7 +416,7 @@
 
 	I got a timeout here. 504 bad gateway. reload page. reload the page, log in and wait...
 
-6. Nextcloud post installation setup
+7. Nextcloud post installation setup
 
 	6.1 Set PHP environment variables properly
 
