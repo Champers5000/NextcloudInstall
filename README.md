@@ -1,5 +1,5 @@
-# Nextcloud on Arch Linux | LEMP | NGINX | MariaDB | PHP7
-
+# Updated Nextcloud on Arch Linux Install Guide (tested on ARM rock64) | NGINX | PHP 8
+# This is a draft
 1. Setup SD Card with Arch Linux for Raspberry Pi 3
 	https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3
 
