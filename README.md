@@ -3,7 +3,7 @@
 # This is a DRAFT (it is incomplete)
 
 ## Table of Contents
-Section 1:  [## 1. Setting up basic components for Arch Linux. ] (#Linux Setup)
+Section 1:  [Linux Setup] (##1.-Arch-Linux-Configuration)
 Section 2: Nextcloud Setup
 Section 3: Post-Installation Steps
 
@@ -12,10 +12,10 @@ Section 3: Post-Installation Steps
 * Working internet connection
 * Knowledge of command line and text editing
 
-## 1. Setting up basic components for Arch Linux. 
+## 1. Arch Linux Configuration
 ### Run everything in this section as the root user
 ### 1.1 Basic system setup
-Make sure you are up to date
+Make sure everything's up to date
 ```
 pacman -Syu
 ```
