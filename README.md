@@ -2,12 +2,18 @@
 ### This guide should also be applicable to x86 based systems
 # This is a DRAFT (it is incomplete)
 
-# Prerequisites
+## Table of Contents
+Section 1:  [## 1. Setting up basic components for Arch Linux. ] (#Linux Setup)
+Section 2: Nextcloud Setup
+Section 3: Post-Installation Steps
+
+## Prerequisites
 * Fresh install of Arch Linux
 * Working internet connection
 * Knowledge of command line and text editing
 
-## 1. Setting up basic components for Arch Linux. Run everything in this section as the root user
+## 1. Setting up basic components for Arch Linux. 
+### Run everything in this section as the root user
 ### 1.1 Basic system setup
 Make sure you are up to date
 ```
@@ -126,6 +132,7 @@ mkdir /mnt/storage
 ```
 To mount this drive on startup, we need the new partition's UUID. `blkid` can tell us the UUID
 ```
+blkid
 ```
 Copy the UUID of the storage partition you made. 
 Next we  modify `/etc/fstab` to mount the drive on startup
