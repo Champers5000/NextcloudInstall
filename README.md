@@ -13,12 +13,12 @@ This was test on an ARM based system (rock64) but should be applicapable to x86 
 * Knowledge of command line and text editing
 
 ## File Locations (for ease of troubleshooting)
-Nextcloud Root Directory = `/usr/share/webapps/nextcloud/` \
-Nextcloud Config Directory = `/usr/share/webapps/nextcloud/config/` symlinked to -> `/etc/webapps/nextcloud/config/` \
-Nextcloud Config File =  `/usr/share/webapps/nextcloud/config/config.php` \
-Nginx config file = `/etc/nginx/nginx.conf` \
-Nginx Nextcloud config file = `/etc/nginx/conf.d/nextcloud.conf` \
-PHP config file = `/etc/php/php-fpm.d/www.conf ` 
+*Nextcloud Root Directory = `/usr/share/webapps/nextcloud/` \
+*Nextcloud Config Directory = `/usr/share/webapps/nextcloud/config/` symlinked to -> `/etc/webapps/nextcloud/config/` \
+*Nextcloud Config File =  `/usr/share/webapps/nextcloud/config/config.php` \
+*Nginx config file = `/etc/nginx/nginx.conf` \
+*Nginx Nextcloud config file = `/etc/nginx/conf.d/nextcloud.conf` \
+*PHP config file = `/etc/php/php-fpm.d/www.conf` 
 
 
 ## 1. Arch Linux Configuration
@@ -304,7 +304,7 @@ Enable Binary Logging in MariaDB by editing the file `/etc/my.cnf.d/mysql-client
 ```
 vim /etc/my.cnf.d/mysql-clients.cnf
 ```
-In the `[mysql] ` section, add these two lines
+In the `[mysql]` section, add these two lines
 ```
 log-bin        = mysql-bin
 binlog_format  = mixed
@@ -329,7 +329,7 @@ server unix:/run/php-fpm/php-fpm.sock;
 }
 server {
 listen 80;
-server_name champersnc.duckdns.org;
+server_name yourDomainHere.com;
 # Add headers to serve security related headers
 add_header X-Content-Type-Options nosniff;
 add_header X-Frame-Options "SAMEORIGIN";
@@ -439,7 +439,7 @@ sudo chown nextcloud:nextcloud /usr/share/webapps/nextcloud/ -R
 sudo chown nextcloud:nextcloud /mnt/storage -R
 ```
 \
-Change nginx to run under the user `nextcloud ` by editing the file `/etc/nginx/nginx.conf`
+Change nginx to run under the user `nextcloud` by editing the file `/etc/nginx/nginx.conf`
 ```
 sudo vim /etc/nginx/nginx.conf
 ```
@@ -584,7 +584,6 @@ Start and enable service
 systemctl start cronie.service
 systemctl enable cronie.service
 ```
-Set CRON radio button at Nextcloud Admin page
 
 ### 4.4 BIG file upload (up to 16GB)
 16GB or whatever limit your heart desires should you want to increase it even more
