@@ -1,6 +1,5 @@
-# Nextcloud on Arch Linux Install Guide (tested on ARM rock64) | LEMP | NGINX | PHP 8
-### This guide should also be applicable to x86 based systems
-# This is a DRAFT (it is incomplete)
+# Nextcloud on Arch Linux Install Guide | LEMP | NGINX | PHP 8
+This was test on an ARM based system (rock64) but should be applicapable to x86 based systems as well. Enjoy, and happy troubleshooting!
 
 ## Table of Contents
 ### Section 1: [Linux Setup](##1.-Arch-Linux-Configuration)
@@ -12,18 +11,16 @@
 * Fresh install of Arch Linux
 * Working internet connection
 * Knowledge of command line and text editing
-\
-## File Locations
-For ease of troubleshooting
-```
-Nextcloud Root Directory = /usr/share/webapps/nextcloud/
-Nextcloud Config Directory = /usr/share/webapps/nextcloud/config/ (symlinked to ->) /etc/webapps/nextcloud/config/
-Nextcloud Config File =  /usr/share/webapps/nextcloud/config/config.php
-Nginx config file = /etc/nginx/nginx.conf
-Nginx Nextcloud config file = /etc/nginx/conf.d/nextcloud.conf
-PHP config file = /etc/php/php-fpm.d/www.conf 
-```
-\
+
+## File Locations (for ease of troubleshooting)
+Nextcloud Root Directory = `/usr/share/webapps/nextcloud/` \
+Nextcloud Config Directory = `/usr/share/webapps/nextcloud/config/ (symlinked to ->) /etc/webapps/nextcloud/config/` \
+Nextcloud Config File =  `/usr/share/webapps/nextcloud/config/config.php` \
+Nginx config file = `/etc/nginx/nginx.conf` \
+Nginx Nextcloud config file = `/etc/nginx/conf.d/nextcloud.conf` \
+PHP config file = `/etc/php/php-fpm.d/www.conf ` \
+
+
 ## 1. Arch Linux Configuration
 ### Run everything in this section as the root user
 ### 1.1 Basic system setup
@@ -685,7 +682,7 @@ And add this line
 
 ## 5. Resolving some nextcloud annoyances
 Under "Administration Settings", you will probably get some warnings. Here's a partial list of solutions to some of them
-\
+
 #### The "X-Robots-Tag" HTTP header is not set to "noindex, nofollow". This is a potential security or privacy risk, as it is recommended to adjust this setting accordingly.
 In file `/etc/nginx/conf.d/nextcloud.conf``
 ```
