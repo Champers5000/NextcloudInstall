@@ -20,13 +20,14 @@ pacman -S sudo vim base-devel openssh
 ```
 ### 1.2 Text editor
 This guide utilizes vim as the text editor, but feel free to use any text editor of your choice.
-Let's set our editor to use vim (replace vim with any text editor)
+Open the file `/etc/environment`
 ```
-EDITOR=vim
-export EDITOR
-printenv EDITOR
+vim /etc/environment
 ```
-If the `printenv` line returns your text editor of choice, it has been set properly. 
+And add the following line 
+```
+EDITOR="/usr/bin/vim"
+```
 
 ### 1.3 Hostname
 Change the hostname to what you want your server to be called. Put that name in the `/etc/hostname` file
