@@ -3,7 +3,7 @@
 # This is a DRAFT (it is incomplete)
 
 ## Table of Contents
-Section 1:  [Linux Setup] (##1.-Arch-Linux-Configuration)
+Section 1:  [Linux Setup](##1.-Arch-Linux-Configuration)
 Section 2: Nextcloud Setup
 Section 3: Post-Installation Steps
 
