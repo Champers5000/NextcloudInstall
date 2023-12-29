@@ -1,5 +1,179 @@
-# Updated Nextcloud on Arch Linux Install Guide (tested on ARM rock64) | NGINX | PHP 8
+# Nextcloud on Arch Linux Install Guide (tested on ARM rock64) | LEMP | NGINX | PHP 8
+## This guide should be applicable to x86 based systems too
 # This is a draft
+
+# Prerequisites
+* Fresh install of Arch Linux
+* Working internet connection
+* Knowledge of command line and text editing
+
+## 1. Setting up basic components for Arch Linux. Run everything in this section as the root user
+### 1.1 Basic system setup
+	Make sure you are up to date
+	```
+	pacman -Syu
+	```
+
+	And install basic necessities
+	```
+	pacman -S sudo vim base-devel openssh
+	```
+### 1.2 Text editor
+	This guide utilizes vim as the text editor, but feel free to use any text editor of your choice.
+	Let's set our editor to use vim (replace vim with any text editor)
+	```
+	EDITOR=vim
+	export EDITOR
+	printenv EDITOR
+	```
+	If the `printenv` line returns your text editor of choice, it has been set properly. 
+
+### 1.3 Hostname
+	Change the hostname to what you want your server to be called. Put that name in the `/etc/hostname` file
+	```
+	vim /etc/hostname
+	```
+
+### 1.4 Generate Locale
+	Nextcloud requires that you have generated locales to work. I will be using `en_US.UTF-8 UTF-8`
+	Uncomment the locale you wish to use in the file `/etc/locale.gen`
+	```
+	vim /etc/locale.gen
+	```
+	Uncomment desired locale 
+	```
+	#en_SG ISO-8859-1
+	en_US.UTF-8 UTF-8
+	#en_US ISO-8859-1
+	```
+	And generate locale
+	```
+	locale-gen 
+	```
+
+### 1.5 Set Timezone
+	Set the timezone of your computer. Here is an example setting it to US Central Time
+	```
+	timedatectl set-timezone America/Chicago
+	timedatectl set-ntp true
+	```
+	Replace `America/Chicago` with your choice of time zone. A list of available time zones can be viewed by running 
+	```
+	timedatectl list-timezones
+	```
+
+### 1.6 Set a static IP 
+	Typically when port forwarding, you want your device to have a static IP. Let's set that here
+	To find your network device run 
+	```
+	ip a
+	```
+	My device name is `eth0`. This could vary. Pick the device you want to give a static IP. We will be using networkd to set the static ip, so we need to create a new file in `/etc/systemd/network/`
+	```
+	vim /etc/systemd/network/eth0.network
+	```
+	Now make the contents of the file look like this
+	```
+	[Match]
+	Name=eth0
+
+	[Network]
+	Address=192.168.1.102/24
+	Gateway=192.168.1.1
+	DNS=8.8.8.8
+	DNS=8.8.4.4
+	```
+	Replace `eth0` with your device name, and the ip address with your desired static IP address. 
+	Make sure you also configure your router settings to accomodated for a static IP (choose a static IP that is outside the DHCP pool).
+
+	Now lets make sure our change takes effect by enabling and disabling some services. Netctl will not be used anymore, so we remove it if it exists. 
+	```
+	pacman -Rns netctl
+	systemctl stop dhcpcd
+	systemctl disable dhcpcd
+	systemctl enable systemd-networkd
+	systemctl start systemd-networkd
+	systemctl enable sshd
+	``` 
+
+### 1.7 External storage drive (optional)
+	If you so choose to use a external drive as your Nextcloud storage, follow these steps. 
+	Use `lsblk` to identify which drive you are using
+	```
+	lsblk
+	```
+	My drive showed up as /dev/sda
+	Use `fdisk` to wipe the drive and create a single partition.
+	```
+	fdisk /dev/sda
+	```
+	At the fdisk prompt, delete old partitions and create a new one:
+	```
+	Type g. This will clear out any partitions on the drive.
+	Type p to list partitions. There should be no partitions left.
+	Type n, 1 for the first partition on the drive,
+		and then press ENTER twice to accept the default first and last sector.
+	Write the partition table and exit by typing w.
+	```
+	Format the partition as ext4 and mount it. Replace `/dev/sda1` with your new partition name
+	```
+	mkfs.ext4 /dev/sda1
+	```
+	Create a mount point for our new partition
+	```
+	mkdir /mnt/storage
+	```
+	To mount this drive on startup, we need the new partition's UUID. `blkid` can tell us the UUID
+	```
+	```
+	Copy the UUID of the storage partition you made. 
+	Next we  modify `/etc/fstab` to mount the drive on startup
+	```
+	vim /etc/fstab
+	```
+	And we write in this line 
+	```
+	UUID=HereUUID /mnt/storage/ ext4 defaults,noatime 0 0
+	```
+	To verify that our fstab works, we should try mounting everything in fstab
+	```
+	systemctl daemon-reload
+	mount -a
+	lsblk
+	```
+	If lsblk shows your partition properly mounted at `/mnt/storage`, you're good to go.
+
+### 1.8 Setup a sudo user (optional)
+	It's dangerous to always run as root user. We can setup a sudo user to use for the rest of the guide here.  I'll name my user "ncadmin".
+	```
+	#create user with home folder
+	useradd -m ncadmin
+
+	#set the user password
+	passwd ncadmin
+
+	#add the user to the wheel group for sudo to work
+	usermod -aG wheel ncadmin
+	```
+	The user is now successfully created, but we need to allow members of group wheel to be sudoers.
+	Run the `visudo` command 
+	```
+	EDITOR=vim visudo
+	```
+	And uncomment this line
+	```
+	## Uncomment to allow members of group wheel to execute any command
+	%wheel ALL=(ALL:ALL) ALL
+	```
+
+### 1.9 Reboot
+	Reboot your system to make sure all changes take effect
+	```
+	reboot
+	```
+
+
+
 1. Setup SD Card with Arch Linux for Raspberry Pi 3
 	https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3
 
