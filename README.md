@@ -3,9 +3,10 @@
 # This is a DRAFT (it is incomplete)
 
 ## Table of Contents
-Section 1:  [Linux Setup](##1.-Arch-Linux-Configuration)
-Section 2: Nextcloud Setup
-Section 3: Post-Installation Steps
+# Section 1:  [Linux Setup](##1.-Arch-Linux-Configuration)
+# Section 2: [LEMP Setup](##2.-LEMP-and-Nextcloud)
+# Section 3: [Nextcloud](##3.-Nextcloud-Install)
+# Section 4: [Post-Install](##4.-Post-Install-Steps)
 
 ## Prerequisites
 * Fresh install of Arch Linux
@@ -180,97 +181,89 @@ Reboot your system to make sure all changes take effect
 reboot
 ```
 
+## 2. LEMP
+### Log in as your sudo user. If you skipped step 1.8, then login as root. 
+### 2.1 Packages
+Let's get all the packages we need in one command
+```
+sudo pacman -Sy nginx-mainline mariadb php-fpm php-gd php-apcu nextcloud cronie
+```
 
-3. Install Nginx, MariaDB, PHP7 (LEMP) on Arch Linux
+### 2.2 NGINX setup
+Not much to do here, just enable NGINX and make sure it works
+```
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo systemctl status nginx
+```
+Navigate to http://serverIP/ to make sure the service is running
 
-	https://www.linuxbabe.com/linux-server/install-lemp-nginx-mariadb-php7-arch-linux-server
+### 2.3 MYSQL Install
+```
+#Initialize the MariaDB data directory prior to starting the service.
+mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+#Start and enable service
+systemctl start mysqld
+systemctl enable mysqld
+systemctl status mysqld
+```
+Run the post-installation security script. Carefully read and just choose the default/recommended options
+```
+mysql_secure_installation
 
-	3.1 Nginx
+```
 
-	Install
+### 2.4 PHP
+We need to tell Nginx to run PHP using php-fpm. Edit the file `/etc/nginx/nginx.conf`
+```
+sudo vim /etc/nginx/nginx.conf
+```
+Find the block that starts with `location ~ \.php$`. The block will likely be commented out. Uncomment it and make it look like this
+```
+	location ~ \.php$ {
+		root           /usr/share/nginx/html;
+		fastcgi_pass   unix:/run/php-fpm/php-fpm.sock;
+		fastcgi_index  index.php;
+		fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		include        fastcgi_params;
+	}
+```
+\
+Now we need to enable the php modules that nextcloud uses. Locate the file `/etc/php/php.ini`
+```
+sudo vim /etc/php/php.ini
+```
+And uncomment the following lines.
+```
+extension=mysqli
+extension=pdo_mysql
+extension=gd
+extension=intl
+extension=exif
+extension=sysvsem
+extension=gmp
+extension=bcmath
+```
+\
+Then start and enable php-fpm
+```
+	systemctl start php-fpm
+	systemctl enable php-fpm
+	systemctl status php-fpm
+```
+\
+Test PHP processing
+```
+echo "<?php phpinfo(); ?>" >> /usr/share/nginx/html/test.php
+systemctl reload nginx
+```
+Browse to http://serverIP/test.php
+\You should see a page giving you detailed php information about your system. If everything is okay, remove test.php
+```
+rm /usr/share/nginx/html/test.php
+```
 
-		pacman -S nginx-mainline
-
-	Start and enable service
-
-		systemctl start nginx
-		systemctl enable nginx
-		systemctl status nginx
-
-	Check if nginx is running, browse to http://serverIP/
-
-	3.2 MariaDB
-
-	Install
-
-		pacman -S mariadb
-
-	Initialize the MariaDB data directory prior to starting the service.
-
-		mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-
-	Start and enable service
-
-		systemctl start mysqld
-		systemctl enable mysqld
-		systemctl status mysqld
-
-	Run the post-installation security script.
-
-		mysql_secure_installation
-
-	3.3 PHP7
-
-	Install
-
-		pacman -S php-fpm
-
-	After it’s installed, we need to tell Nginx to run PHP using php-fpm.
-
-		nano /etc/nginx/nginx.conf
-
-	Find the location ~ \.php$ section and modify it to the following:
-
-		location ~ \.php$ {
-		    root           /usr/share/nginx/html;
-		    fastcgi_pass   unix:/run/php-fpm/php-fpm.sock;
-		    fastcgi_index  index.php;
-		    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-		    include        fastcgi_params;
-		}
-
-	Then start and enable php-fpm
-
-		systemctl start php-fpm
-		systemctl enable php-fpm
-		systemctl status php-fpm
-
-	Test PHP processing
-
-		echo "<?php phpinfo(); ?>" >> /usr/share/nginx/html/test.php
-		systemctl reload nginx
-
-	Browse to http://serverIP/test.php
-
-	Enable extensions
-
-		vim /etc/php/php.ini
-
-	Uncomment the following 2 lines
-
-		;extension=mysqli.so
-		;extension=pdo_mysql.so
-
-	Reload php-fpm service
-
-		systemctl reload php-fpm
-
-	if everything is okay. remove test.php
-
-		rm /usr/share/nginx/html/test.php
-
-4. Install and Setup Nextcloud Server on Arch Linux
-
+## 3. Nextcloud Install
 	https://www.linuxbabe.com/cloud-storage/nextcloud-server-arch-linux-nginx-mariadb-php7
 
 	4.1 Install Nextcloud server
@@ -490,8 +483,7 @@ reboot
 
 	I got a timeout here. 504 bad gateway. reload page. reload the page, log in and wait...
 
-7. Nextcloud post installation setup
-
+## 4. Post-Install Steps
 	6.1 Set PHP environment variables properly
 
 	Uncomment in /etc/php/php-fpm.d/www.conf the following lines
