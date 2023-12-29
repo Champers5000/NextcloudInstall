@@ -3,10 +3,10 @@
 # This is a DRAFT (it is incomplete)
 
 ## Table of Contents
-# Section 1:  [Linux Setup](##1.-Arch-Linux-Configuration)
-# Section 2: [LEMP Setup](##2.-LEMP-and-Nextcloud)
-# Section 3: [Nextcloud](##3.-Nextcloud-Install)
-# Section 4: [Post-Install](##4.-Post-Install-Steps)
+### Section 1: [Linux Setup](##1.-Arch-Linux-Configuration)
+### Section 2: [LEMP Setup](##2.-LEMP-and-Nextcloud)
+### Section 3: [Nextcloud](##3.-Nextcloud-Install)
+### Section 4: [Post-Install](##4.-Post-Install-Steps)
 
 ## Prerequisites
 * Fresh install of Arch Linux
