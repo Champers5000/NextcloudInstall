@@ -14,11 +14,11 @@ This was test on an ARM based system (rock64) but should be applicapable to x86 
 
 ## File Locations (for ease of troubleshooting)
 Nextcloud Root Directory = `/usr/share/webapps/nextcloud/` \
-Nextcloud Config Directory = `/usr/share/webapps/nextcloud/config/ (symlinked to ->) /etc/webapps/nextcloud/config/` \
+Nextcloud Config Directory = `/usr/share/webapps/nextcloud/config/` symlinked to -> `/etc/webapps/nextcloud/config/` \
 Nextcloud Config File =  `/usr/share/webapps/nextcloud/config/config.php` \
 Nginx config file = `/etc/nginx/nginx.conf` \
 Nginx Nextcloud config file = `/etc/nginx/conf.d/nextcloud.conf` \
-PHP config file = `/etc/php/php-fpm.d/www.conf ` \
+PHP config file = `/etc/php/php-fpm.d/www.conf ` 
 
 
 ## 1. Arch Linux Configuration
